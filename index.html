@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Image Display</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #4e6e81, #e6f1f5);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #2b3d45;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInUp 0.8s forwards 0.3s;
+        }
+
+        /* Animation for text */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        label {
+            font-size: 1rem;
+            color: #333;
+            margin-right: 15px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInLeft 0.8s forwards 0.6s;
+        }
+
+        /* Animation for labels */
+        @keyframes fadeInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        select {
+            padding: 12px 18px;
+            font-size: 1rem;
+            margin-right: 20px;
+            border-radius: 8px;
+            border: 2px solid #007c92;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards 1s;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        /* Hover effect for dropdown */
+        select:hover {
+            border-color: #005f72;
+            background-color: #e0f7fa;
+        }
+
+        /* Layout for image container */
+        #imageDisplay {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 850px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 1.3s;
+            transition: transform 0.3s ease;
+        }
+
+        /* Animation for image container */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles */
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow: auto;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        /* Button and Layout Enhancements */
+        .dropdown-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s forwards 0.5s;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Smooth fade-in animation for dropdown container */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Media Query for mobile devices */
+        @media (max-width: 768px) {
+            .dropdown-container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            label {
+                font-size: 1rem;
+            }
+
+            select {
+                font-size: 1rem;
+                padding: 10px 15px;
+                max-width: 100%;
+            }
+
+            #imageDisplay {
+                height: 300px;
+            }
+        }
+
+        /* Media Query for extra small mobile devices */
+        @media (max-width: 480px) {
+            .dropdown-container {
+                width: 95%;
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            select {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+
+            #imageDisplay {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dropdown-container">
+        <h2>Select Initial Location and Building</h2>
+
+        <label for="initialLocation">Initial Location: </label>
+        <select id="initialLocation">
+            <option value="Building No. 4">Building No. 4</option>
+            <option value="Building No. 5">Building No. 5</option>
+            <option value="Building No. 6">Building No. 6</option>
+            <option value="Basketball Court">Basketball Court</option>
+            <option value="Reception">Reception</option>
+        </select>
+
+        <label for="building">Building: </label>
+        <select id="building">
+            <option value="Building 7&8">Building 7&8</option>
+        </select>
+
+        <div id="imageDisplay"></div>
+        <p style="text-align: center; font-size: 0.9rem; color: #666; margin-top: 10px;">Click on the image to enlarge</p>
+    </div>
+
+    <!-- Modal for Enlarged Image -->
+    <div id="modal">
+        <img id="modalImage" src="" alt="Enlarged Image">
+    </div>
+
+    <script>
+        const initialLocationDropdown = document.getElementById('initialLocation');
+        const buildingDropdown = document.getElementById('building');
+        const imageDisplay = document.getElementById('imageDisplay');
+        const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modalImage');
+
+        // Image mapping based on combinations
+        const imageMapping = {
+            "Building No. 4-Building 7&8": "4 TO 7&8.png",
+            "Building No. 5-Building 7&8": "5 TO 7&8.png",
+            "Building No. 6-Building 7&8": "6 TO 7&8.png",
+            "Basketball Court-Building 7&8": "BASKETBALL TO 7&8.png",
+            "Reception-Building 7&8": "RECEPTION TO BULDING 7 & 8.png"
+        };
+
+        function updateImage() {
+            const initialLocation = initialLocationDropdown.value;
+            const building = buildingDropdown.value;
+            const combinationKey = `${initialLocation}-${building}`;
+
+            // Display the corresponding image if available
+            const imageSrc = imageMapping[combinationKey];
+            if (imageSrc) {
+                imageDisplay.innerHTML = `<img src="${imageSrc}" alt="Location Image" class="clickable-image">`;
+                const imageElement = imageDisplay.querySelector("img");
+                imageElement.onclick = () => openModal(imageSrc);
+            } else {
+                imageDisplay.innerHTML = "";
+            }
+        }
+
+        function openModal(imageSrc) {
+            modal.style.display = "flex";
+            modalImage.src = imageSrc;
+        }
+
+        // Close modal when clicked outside the image
+        modal.onclick = function() {
+            modal.style.display = "none";
+        };
+
+        // Update image when dropdowns change
+        initialLocationDropdown.addEventListener('change', updateImage);
+        buildingDropdown.addEventListener('change', updateImage);
+
+        // Initialize the image display on page load
+        window.onload = updateImage;
+    </script>
+
+</body>
+</html>
